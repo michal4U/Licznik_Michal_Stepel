@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Counter.MainPage"
+             Title="Dynamiczne Liczniki">
+
+    <VerticalStackLayout Padding="10">
+        <!-- nazwa licznika -->
+        <Entry x:Name="CounterNameEntry"
+               Placeholder="Wprowadź nazwę licznika"
+               HorizontalOptions="FillAndExpand" />
+
+        <!--dodawanie nowego licznika -->
+        <Button Text="Dodaj nowy licznik" 
+                Clicked="OnAddCounterClicked"
+                HorizontalOptions="Center" />
+        <!--tu tworza sie cznika -->
+        <StackLayout x:Name="CountersLayout"
+                     Padding="10" />
+    </VerticalStackLayout>
+</ContentPage>
