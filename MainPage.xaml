@@ -8,14 +8,17 @@
         <!-- nazwa licznika -->
         <Entry x:Name="CounterNameEntry"
                Placeholder="Wprowadź nazwę licznika"
-               HorizontalOptions="FillAndExpand" />
+               HorizontalOptions="FillAndExpand" 
+               Margin="10"/>
 
         <!--dodawanie nowego licznika -->
         <Button Text="Dodaj nowy licznik" 
                 Clicked="OnAddCounterClicked"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" 
+                Margin="10"/>
         <!--tu tworza sie cznika -->
         <StackLayout x:Name="CountersLayout"
-                     Padding="10" />
+                     Padding="10"
+                     Margin="10"/>
     </VerticalStackLayout>
 </ContentPage>

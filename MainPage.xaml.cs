@@ -35,8 +35,9 @@ namespace Counter
 
             var nameLabel = new Label
             {
-                Text = counterName,
-                VerticalOptions = LayoutOptions.Center
+                 Text = counterName,
+                 VerticalOptions = LayoutOptions.Center,
+                 Margin = new Thickness(10)
             };
 
             var valueLabel = new Label
