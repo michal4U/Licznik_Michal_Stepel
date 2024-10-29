@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.Json;
 using Microsoft.Maui.Storage;
 
@@ -6,18 +6,19 @@ namespace Counter
 {
     public partial class MainPage : ContentPage
     {
-        private const string FileName = "counters.txt"; 
+        private const string FileName = "counters.json";
 
         public MainPage()
         {
             InitializeComponent();
-            LoadCounters(); 
+            LoadCounters();
         }
 
-        //dodawanie licznika
+
         private void OnAddCounterClicked(object sender, EventArgs e)
         {
             var counterName = CounterNameEntry.Text;
+            var initialValueText = CounterValueEntry.Text;
 
             if (string.IsNullOrWhiteSpace(counterName))
             {
@@ -25,24 +26,38 @@ namespace Counter
                 return;
             }
 
-            AddCounter(counterName, 0);
-            CounterNameEntry.Text = string.Empty; 
+            int initialValue;
+
+            if (string.IsNullOrWhiteSpace(initialValueText))
+            {
+                initialValue = 0;
+            }
+            else
+            {
+                initialValue = int.Parse(initialValueText);
+            }
+
+            AddCounter(counterName, initialValue);
+            CounterNameEntry.Text = string.Empty;
+            CounterValueEntry.Text = string.Empty;
         }
-        //tworzenie liucznika
+
+
+        // dodawanie licznika
         private void AddCounter(string counterName, int initialValue)
         {
             var counterLayout = new StackLayout { Orientation = StackOrientation.Horizontal };
 
             var nameLabel = new Label
             {
-                 Text = counterName,
-                 VerticalOptions = LayoutOptions.Center,
-                 Margin = new Thickness(10)
+                Text = counterName,
+                VerticalOptions = LayoutOptions.Center,
+                Margin = new Thickness(10) 
             };
 
             var valueLabel = new Label
             {
-                Text = initialValue.ToString(),
+                Text = initialValue.ToString(), 
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.CenterAndExpand
             };
@@ -65,7 +80,7 @@ namespace Counter
                 {
                     var currentValue = int.Parse(valueLabel.Text);
                     valueLabel.Text = (currentValue + 1).ToString();
-                    SaveCounters();
+                    SaveCounters(); 
                 })
             };
 
@@ -75,41 +90,39 @@ namespace Counter
             counterLayout.Children.Add(plusButton);
 
             CountersLayout.Children.Add(counterLayout);
-            SaveCounters(); 
+            SaveCounters();
         }
-
-       //zapisywanie
+        //zapisywanie
         private async void SaveCounters()
         {
             var counters = new List<CounterData>();
 
-            foreach (var child in CountersLayout.Children)
+            foreach (StackLayout counterLayout in CountersLayout.Children)
             {
-                if (child is StackLayout counterLayout && counterLayout.Children[0] is Label nameLabel && counterLayout.Children[2] is Label valueLabel)
+                var nameLabel = (Label)counterLayout.Children[0];
+                var valueLabel = (Label)counterLayout.Children[2];
+
+                var counterData = new CounterData
                 {
-                    var counterData = new CounterData
-                    {
-                        Name = nameLabel.Text,
-                        Value = int.Parse(valueLabel.Text)
-                    };
-                    counters.Add(counterData);
-                }
+                    Name = nameLabel.Text,
+                    Value = int.Parse(valueLabel.Text)
+                };
+                counters.Add(counterData);
             }
 
             var json = JsonSerializer.Serialize(counters);
             var filePath = Path.Combine(FileSystem.AppDataDirectory, FileName);
 
-            await File.WriteAllTextAsync(filePath, json); 
+            await File.WriteAllTextAsync(filePath, json);
         }
-
-       //ladowanie licznika
+        //ladowanie
         private async void LoadCounters()
         {
             var filePath = Path.Combine(FileSystem.AppDataDirectory, FileName);
 
             if (File.Exists(filePath))
             {
-                var json = await File.ReadAllTextAsync(filePath); 
+                var json = await File.ReadAllTextAsync(filePath);
                 if (!string.IsNullOrEmpty(json))
                 {
                     var counters = JsonSerializer.Deserialize<List<CounterData>>(json);
