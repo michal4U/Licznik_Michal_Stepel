@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Counter.MainPage"
@@ -10,6 +10,13 @@
                Placeholder="Wprowadź nazwę licznika"
                HorizontalOptions="FillAndExpand" 
                Margin="10"/>
+        <!-- wartosc poczatkaowa -->
+        <Entry x:Name="CounterValueEntry"
+                Placeholder="Wprowadź liczbę początkową"
+                HorizontalOptions="FillAndExpand"
+                Margin="10"
+                Keyboard="Numeric"/>
+
 
         <!--dodawanie nowego licznika -->
         <Button Text="Dodaj nowy licznik" 
